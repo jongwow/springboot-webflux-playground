@@ -2,58 +2,58 @@ package kr.jongwow.spflux.service;
 
 import kr.jongwow.spflux.domain.Member;
 import kr.jongwow.spflux.repository.MemberRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
-import org.mockito.MockitoAnnotations;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.kafka.core.KafkaTemplate;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import static org.mockito.Mockito.*;
-
+@ExtendWith(MockitoExtension.class)
 class MemberServiceTest {
+    @Mock
     private MemberRepository memberRepository;
-    private KafkaTemplate<String, Object> kafkaTemplate;
-    private MemberService memberService;
 
+    @Mock
+    private KafkaTemplate<String, Object> kafkaTemplate;
+
+    @InjectMocks
+    private MemberService memberService;
 
     @Captor
     ArgumentCaptor<Member> valueCaptor;
+
     @Captor
     ArgumentCaptor<String> keyCaptor;
 
-    @BeforeEach
-    public void setUP() {
-        MockitoAnnotations.openMocks(this);
-        memberRepository = mock(MemberRepository.class);
-        kafkaTemplate = mock(KafkaTemplate.class);
-        memberService = new MemberService(memberRepository, kafkaTemplate);
-    }
 
     @Test
-    public void testGetMemberById() {
+    public void shouldReturnMemberWhenExists() {
         Member member = new Member();
         member.setId(1L);
-        member.setName("John Doe");
-        member.setEmail("john.doe@example.com");
+        member.setName("AAA Doe");
+        member.setEmail("AAA.doe@example.com");
 
         when(memberRepository.findById(1L)).thenReturn(Mono.just(member));
 
         Mono<Member> result = memberService.getMemberById(1L);
 
         StepVerifier.create(result)
-                .expectNextMatches(m -> m.getName().equals("John Doe"))
+                .expectNextMatches(m -> m.getName().equals("AAA Doe"))
                 .verifyComplete();
     }
 
     @Test
     public void testCreateMemberAndSendKafkaMessage() {
         Member member = new Member();
-        member.setName("John Doe");
-        member.setEmail("john.doe@example.com");
-        member.setId(100L);
+        member.setId(1L);
+        member.setName("BBB Doe");
+        member.setEmail("BBB.doe@example.com");
 
         when(memberRepository.save(member)).thenReturn(Mono.just(member));
 
