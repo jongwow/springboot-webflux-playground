@@ -18,19 +18,26 @@ repositories {
 }
 
 dependencies {
+    // Spring Boot WebFlux
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
-    developmentOnly 'org.springframework.boot:spring-boot-devtools'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'io.projectreactor:reactor-test'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-
-
+    // Lombok
     implementation('org.projectlombok:lombok')
     annotationProcessor('org.projectlombok:lombok')
     testImplementation('org.projectlombok:lombok')
     testAnnotationProcessor('org.projectlombok:lombok')
+
+    // R2DBC for H2 Database
+    implementation 'io.r2dbc:r2dbc-h2'
+    implementation 'org.springframework.boot:spring-boot-starter-data-r2dbc'
+
+    runtimeOnly 'com.h2database:h2'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'io.projectreactor:reactor-test'
+
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
 }
 
-tasks.named('test') {
+test {
     useJUnitPlatform()
 }
