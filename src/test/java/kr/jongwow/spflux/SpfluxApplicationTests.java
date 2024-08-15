@@ -8,6 +8,7 @@ class SpfluxApplicationTests {
 
 	@Test
 	void contextLoads() {
+
 	}
 
 }
