@@ -1,6 +1,5 @@
 package kr.jongwow.spflux.controller;
 
-
 import kr.jongwow.spflux.domain.Member;
 import kr.jongwow.spflux.service.MemberService;
 import lombok.RequiredArgsConstructor;
